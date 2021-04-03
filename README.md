@@ -1,6 +1,5 @@
-# **Snakes and Kabootars**  
-  HU-themed Snakes and Ladders  
-  DSA Project    
+# **Snakes and Kabootars**  -  DSA Project  
+  HU-themed Snakes and Ladders    
 
 #  Group Members:  
 - Sudais Yasin  
