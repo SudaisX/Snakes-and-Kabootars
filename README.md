@@ -1,7 +1,5 @@
-# **DSA-I Project**  
-
 # **Snakes and Kabootars**  
-  HU-themed Snakes and Ladders    
+  HU-themed Snakes and Ladders project for the course Data Structures and Algorithms I (CS102)  
 
 #  Group Members:  
 - Sudais Yasin  
