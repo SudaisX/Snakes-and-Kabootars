@@ -1,4 +1,6 @@
-# **Snakes and Kabootars**  -  DSA Project  
+# **DSA-I Project**  
+
+# **Snakes and Kabootars**  
   HU-themed Snakes and Ladders    
 
 #  Group Members:  
