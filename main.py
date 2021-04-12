@@ -1,8 +1,8 @@
 #Imports
 import pygame
+from dsa import Graph, Stack, Queue
 from pprint import pprint
 from random import randint
-from dsa import Graph, Stack, Queue
 
 #Player class
 class Player():
@@ -27,8 +27,16 @@ class Dice():
 #Setting the graph up
 graph = Graph()
 
-graph.addNodes([i for i in range(101)])
-graph.addEdges([(i, i+1, 1) for i in range(100)], True)
+nodes = [i for i in range(1, 101)]
+edges = [(i, i+1, 1) for i in range(1, 100)]
+
+snakes = []
+ladders = []
+
+graph.addNodes(nodes)
+graph.addEdges(edges, True) #for the basic
+graph.addEdges(snakes, True)
+graph.addEdges(ladders, True)
 
 #debugging
 pprint(graph.displayGraph())
