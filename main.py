@@ -40,13 +40,13 @@ tile_edges = [(1, 2, (0, 0)), (2, 3, (0, 0)), (3, 4, (0, 0)), (4, 5, (0, 0)), (5
 (80, 81, (0, 0)), (81, 82, (0, 0)), (82, 83, (0, 0)), (83, 84, (0, 0)), (84, 85, (0, 0)), (85, 86, (0, 0)), (86, 87, (0, 0)), (87, 88, (0, 0)), (88, 89, (0, 0)), (89, 90, (0, 0)), 
 (90, 91, (0, 0)), (91, 92, (0, 0)), (92, 93, (0, 0)), (93, 94, (0, 0)), (94, 95, (0, 0)), (95, 96, (0, 0)), (96, 97, (0, 0)), (97, 98, (0, 0)), (98, 99, (0, 0)), (99, 100, (0, 0))]
 
-snake_edges = [] #edges for all the snakes
-kabootar_edges = [(35, 10, (0, 0))] #edges for all the ladders
+snakes = [] #edges for all the snakes
+kabootars = [(35, 10, (0, 0))] #edges for all the kabootars
 
 graph.addNodes(tiles)
 graph.addEdges(tile_edges, True) 
-graph.addEdges(snake_edges, True)
-graph.addEdges(kabootar_edges, True)
+graph.addEdges(snakes, True)
+graph.addEdges(kabootars, True)
 
 #debugging
 pprint(graph.displayGraph())
