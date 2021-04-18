@@ -6,7 +6,8 @@ from random import randint
 
 #Player class
 class Player():
-    def __init__(self):
+    def __init__(self, player_number):
+        self.player_number = player_number
         self.position = graph.graph[0][3]
 
     def draw(self):
@@ -27,7 +28,7 @@ class Dice():
 #Setting the graph up
 graph = Graph()
 
-tiles = [i for i in range(1, 101)] #nodes of all the tiles
+tiles = [i for i in range(1, 101)] #list of all the nodes/tiles
 #(node, edge, (x, y))
 tile_edges = [(1, 2, (0, 0)), (2, 3, (0, 0)), (3, 4, (0, 0)), (4, 5, (0, 0)), (5, 6, (0, 0)), (6, 7, (0, 0)), (7, 8, (0, 0)), (8, 9, (0, 0)), (9, 10, (0, 0)), 
 (10, 11, (0, 0)), (11, 12, (0, 0)), (12, 13, (0, 0)), (13, 14, (0, 0)), (14, 15, (0, 0)), (15, 16, (0, 0)), (16, 17, (0, 0)), (17, 18, (0, 0)), (18, 19, (0, 0)), (19, 20, (0, 0)), 
@@ -47,6 +48,12 @@ graph.addNodes(tiles)
 graph.addEdges(tile_edges, True) 
 graph.addEdges(snakes, True)
 graph.addEdges(kabootars, True)
+
+total_players = int(input("How many players? Enter a number between 2-4\n"))
+players = Queue()
+
+
+print(players.q)
 
 #debugging
 pprint(graph.displayGraph())
