@@ -9,8 +9,8 @@ from random import randint
 pygame.init()
 
 #screen size and background image
-screen = pygame.display.set_mode((926, 640)) #creates the screen with the arguments passed as a tuple of (Width, Height)
-background = background = pygame.image.load('images/backgrounds/kabbu.jpg') #('Location of the background image')
+screen = pygame.display.set_mode((960, 720)) #creates the screen with the arguments passed as a tuple of (Width, Height)
+background = background = pygame.image.load('images/backgrounds/board.jpg') #('Location of the background image')
 
 #icon and title
 icon = pygame.image.load('images/icons/icon.png') #('icon location')
