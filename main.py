@@ -13,7 +13,7 @@ screen = pygame.display.set_mode((960, 720)) #creates the screen with the argume
 background = background = pygame.image.load('images/backgrounds/board.jpg') #('Location of the background image')
 
 #icon and title
-icon = pygame.image.load('images/icons/icon.png') #('icon location')
+icon = pygame.image.load('images/player.png') #('icon location')
 pygame.display.set_caption('Kabib ke Habootars') #('Title of the game)
 pygame.display.set_icon(icon) #display icon
 
@@ -25,10 +25,14 @@ mixer.music.play(-1) #-1 so it plays in a loop
 class Player():
     def __init__(self, player_number):
         self.player_number = player_number
-        self.position = graph.graph[0][3]
+        self.image = pygame.image.load('images/player.png')
+        self.position = graph.graph[0][0][1]
+        # self.x = 295
+        # self.y = 615
+        self.x_change = 0
 
-    def draw(self):
-        pass
+    def draw(self): #draw method
+        screen.blit(self.image, self.position)
 
 #Time class
 class Time():
@@ -45,9 +49,9 @@ class Dice():
 #Setting the graph up
 graph = Graph()
 
-tiles = [i for i in range(1, 101)] #list of all the nodes/tiles
+tiles = [i for i in range(101)] #list of all the nodes/tiles
 #(node, edge, (x, y))
-tile_edges = [(1, 2, (0, 0)), (2, 3, (0, 0)), (3, 4, (0, 0)), (4, 5, (0, 0)), (5, 6, (0, 0)), (6, 7, (0, 0)), (7, 8, (0, 0)), (8, 9, (0, 0)), (9, 10, (0, 0)), 
+tile_edges = [(0, 1, (296, 615)), (1, 2, (0, 0)), (2, 3, (0, 0)), (3, 4, (0, 0)), (4, 5, (0, 0)), (5, 6, (0, 0)), (6, 7, (0, 0)), (7, 8, (0, 0)), (8, 9, (0, 0)), (9, 10, (0, 0)), 
 (10, 11, (0, 0)), (11, 12, (0, 0)), (12, 13, (0, 0)), (13, 14, (0, 0)), (14, 15, (0, 0)), (15, 16, (0, 0)), (16, 17, (0, 0)), (17, 18, (0, 0)), (18, 19, (0, 0)), (19, 20, (0, 0)), 
 (20, 21, (0, 0)), (21, 22, (0, 0)), (22, 23, (0, 0)), (23, 24, (0, 0)), (24, 25, (0, 0)), (25, 26, (0, 0)), (26, 27, (0, 0)), (27, 28, (0, 0)), (28, 29, (0, 0)), (29, 30, (0, 0)), 
 (30, 31, (0, 0)), (31, 32, (0, 0)), (32, 33, (0, 0)), (33, 34, (0, 0)), (34, 35, (0, 0)), (35, 36, (0, 0)), (36, 37, (0, 0)), (37, 38, (0, 0)), (38, 39, (0, 0)), (39, 40, (0, 0)), 
@@ -70,7 +74,9 @@ graph.addEdges(kabootars, True)
 # players = Queue()
 
 #debugging
-# pprint(graph.displayGraph())
+pprint(graph.displayGraph())
+
+sudais = Player(1)
 
 #Game loop
 running = True #Initialise with True to run the gamme
@@ -82,5 +88,7 @@ while running: #checks if game is still running
     for event in pygame.event.get(): #iterates through all the eventss in event.get()
         if event.type == pygame.QUIT: #Checks if the X button has been pressed on the window, if yes then
             running = False #sets running to False so the game breaks
+
+    sudais.draw()
 
     pygame.display.update() #updates display within the loop
