@@ -9,11 +9,11 @@ from random import randint
 pygame.init()
 
 #screen size and background image
-screen = pygame.display.set_mode((960, 540)) #creates the screen with the arguments passed as a tuple of (Width, Height)
-background = background = pygame.image.load('images/kabbu.jpg') #('Location of the background image')
+screen = pygame.display.set_mode((926, 640)) #creates the screen with the arguments passed as a tuple of (Width, Height)
+background = background = pygame.image.load('images/backgrounds/kabbu.jpg') #('Location of the background image')
 
 #icon and title
-icon = pygame.image.load('images/icon.png') #('icon location')
+icon = pygame.image.load('images/icons/icon.png') #('icon location')
 pygame.display.set_caption('Kabib ke Habootars') #('Title of the game)
 pygame.display.set_icon(icon) #display icon
 
@@ -70,7 +70,7 @@ graph.addEdges(kabootars, True)
 # players = Queue()
 
 #debugging
-pprint(graph.displayGraph())
+# pprint(graph.displayGraph())
 
 #Game loop
 running = True #Initialise with True to run the gamme
