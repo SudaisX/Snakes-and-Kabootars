@@ -43,9 +43,22 @@ def __main__():
             Labs?
             Grounds 
             Sunsets
-            Water courtyard with the kabootars
-            Staying till the light turn on
+            Water courtyard with the habootars*
+                *habootars go 'hwoo hwoo', khabootars go 'pop, poop, pttt'
+            Staying till the lights turn on
             Panicking to make that 11:59 submission at 11:58
-            
-
+            Enrolment
+            [Being tolerant]
+            Ranting in the townhalls
+            Appreciating wholesomeness 
+            [a couple of things to do with the forums?]
+            Hanging out at the Student Centre (ask a sophomore or above)
+            Event at the central street
+            Some design workshop at the playground
+            * A PANDEMIC STARTED?*
+                You missed an online class
+                Your schedule's a mess
+                Discord/Zoom call
+                SEL Scores
+                Playing 
     """
