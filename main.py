@@ -59,11 +59,12 @@ class Board():
     def __init__(self):
         self.board = Graph()
         self.tiles = [i for i in range(101)]
-        self.edges = self.create_tiles(370, 70, 660, 70)
+        self.edges = self.__create_tiles(370, 70, 660, 70)
         self.board.addNodes(self.tiles)
         self.board.addEdges(self.edges, True) 
 
-    def create_tiles(self, x, x_change, y, y_change):
+    # A private method to create tiles
+    def __create_tiles(self, x, x_change, y, y_change):
         x_nodes = []
         y_nodes = []
         tiles = []
@@ -89,8 +90,13 @@ class Board():
                 left = True
         return tiles
 
+    #function to add kabootars
     def add_kabootars(self, kabootars):
         self.board.addEdges(kabootars, True)
+    
+    #function to add snakes
+    def add_snakes(self, snakes):
+        self.board.addEdges(snakes, True)
 
 #Setting the graph up
 
@@ -99,7 +105,8 @@ snakes = [] #edges for all the snakes
 kabootars = [(35, 10, (0, 0))] #edges for all the kabootars
 
 board.add_kabootars(kabootars)
-# graph.addEdges(kabootars, True)
+board.add_snakes(snakes)
+
 
 # total_players = int(input("How many players? Enter a number between 2-4\n"))
 # players = Queue()
@@ -127,8 +134,8 @@ while running: #checks if game is still running
     player2.draw()
 
     # random test of it moving
-    time.sleep(0.5)
-    player2.current_pos += 1
+    time.sleep(0.5) #time delay between each player moving
+    player2.current_pos += 1 #changing n position of time 
 
 
     pygame.display.update() #updates display within the loop
