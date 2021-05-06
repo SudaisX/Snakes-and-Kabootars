@@ -71,8 +71,6 @@ class Board():
         for i in range(10):
             x_nodes.append(x)
             x += x_change
-
-        for i in range(10):
             y_nodes.append(y)
             y -= y_change
 
@@ -136,7 +134,7 @@ while running: #checks if game is still running
     player2.draw()
 
     # random test of it moving
-    time.sleep(0.1)
+    time.sleep(0.5)
     player2.current_pos += 1
 
 
