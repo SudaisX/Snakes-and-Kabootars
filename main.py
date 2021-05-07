@@ -8,13 +8,14 @@ import time
 
 #initializes pygame
 pygame.init()
+print('GAME STARTED! ')
 
 #screen size and background image
 screen = pygame.display.set_mode((1080, 720)) #creates the screen with the arguments passed as a tuple of (Width, Height)
 background = background = pygame.image.load('images/backgrounds/newboard.png') #('Location of the background image')
 
 #icon and title
-icon = pygame.image.load('images/player.png') #('icon location')
+icon = pygame.image.load('images/players/player1.png') #('icon location')
 pygame.display.set_caption('Kabib ke Habootars') #('Title of the game)
 pygame.display.set_icon(icon) #display icon
 
@@ -24,8 +25,10 @@ mixer.music.play(-1) #-1 so it plays in a loop
 
 #Player class
 class Player():
-    def __init__(self):
-        self.image = pygame.image.load('images/player.png')
+    def __init__(self, player_num):
+        self.player_num = player_num
+        self.images = ['images/players/player1.png', 'images/players/zain.png']
+        self.image = pygame.image.load(self.images[player_num-1])
         self.current_pos = 0
         self.x = board.board.graph[self.current_pos][0][1][0]
         self.y = board.board.graph[self.current_pos][0][1][1]
@@ -48,12 +51,13 @@ class Time():
     pass
 
 #Dice class
-class Dice():
+class Kismat():
     def __init__(self):
-        pass
+        self.kismat = randint(1, 6)
 
     def roll(self):
-        pass
+        self.kismat = randint(1, 6)
+        return self.kismat
 
 class Board():
     def __init__(self):
@@ -107,15 +111,20 @@ kabootars = [(35, 10, (0, 0))] #edges for all the kabootars
 board.add_kabootars(kabootars)
 board.add_snakes(snakes)
 
+# Initialising Kismat
+kismat = Kismat()
 
-# total_players = int(input("How many players? Enter a number between 2-4\n"))
-# players = Queue()
-
+#Initialising Players
+total_players = int(input("How many players? Enter a number between 2-4\n"))
+players = Queue()
+for i in range(total_players): 
+    players.enQueue(Player(i+1))
 #debugging
-pprint(board.board.displayGraph())
+#pprint(board.board.displayGraph())
 
-player1 = Player()
-player2 = Player()
+
+# player1 = Player()
+# player2 = Player()
 
 # player2.current_pos = 58
 
@@ -129,13 +138,25 @@ while running: #checks if game is still running
     for event in pygame.event.get(): #iterates through all the eventss in event.get()
         if event.type == pygame.QUIT: #Checks if the X button has been pressed on the window, if yes then
             running = False #sets running to False so the game breaks
+        if event.type == pygame.KEYDOWN: 
+            if event.key == pygame.K_SPACE: #if space pressed then,
+                num = kismat.roll()
+                curr_player = players.deQueue()
+                print(f'Player {curr_player.player_num} pressed Space and rolled {num}')
+                for i in range(num):
+                    time.sleep(0.5) #time delay between each player moving
+                    
+                    curr_player.current_pos += 1 #changing n position of time 
 
-    player1.draw()
-    player2.draw()
+                    for player in players.q:
+                        player.draw()
+                        curr_player.draw()
 
-    # random test of it moving
-    time.sleep(0.5) #time delay between each player moving
-    player2.current_pos += 1 #changing n position of time 
+                    pygame.display.update()
+                    screen.blit(background, (0,0))
+                players.enQueue(curr_player)
 
+    for player in players.q:
+        player.draw()
 
     pygame.display.update() #updates display within the loop
