@@ -10,23 +10,54 @@ HEIGHT = 650
 screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('HU Kabootars les gooo')
         #BAckground
-background = pygame.image.load(r"images\Kabootars\kabbu.jpg")
+background = pygame.image.load(r"images\Kabootars\memeKabootar.jpg")
+        #font
+font = pygame.font.SysFont('Arial',30)
 
 def start_menu():
-    hellotext = pygame.font.SysFont("Arial",30).render('Hello',True, 'white')
+    hellotext = font.render('Hello',True, 'white')
     while True: #keeps running after called
         screen.fill("black")  #default colour
         screen.blit(hellotext,(5,5))    #test text
-        screen.blit(background,(-500,-100)) #blit the background
+        screen.blit(background,(-150,50)) #blit the background
+
+        button_text = font.render("Start!",True,'Blue') # start button text
+        screen.blit(button_text,(500,10))
+
+        start_button = create_button(500,10,button_text.get_width(),button_text.get_height(),'Blue','Blue')
+        if start_button:
+            player_select()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
+
         pygame.display.update()
-        clock.tick(1)
+        clock.tick(15)
         return True
 
+def create_button(x, y, width, height, activecolor, inactivecolor): # text = what to write, x = position along x of top left corner of text, y = position along y of top left corner of text, width = width of button, height = height of button, actovecolor = color when hovering, inactivecolor = color when dormant
+    cursor = pygame.mouse.get_pos()     #stores the position of the cursor in tuple (x,y)
+    click = pygame.mouse.get_pressed(3) #senses when clicked return a tuple of (x,y)
+
+    if (x + width) > cursor[0] > x and (y + height) > cursor[1] > y:    #if my mouse is on the button
+        pygame.draw.rect(screen,activecolor,(x,y,width,height))         #light up the button
+        if click[0] == 1:
+            return True                                         #when the click is on the button move to player choosing screen
+        else:
+            pygame.draw.rect(screen, activecolor,(x,y,width,height))
+
+
+def player_select():
+    while True:
+        screen.fill('Black')
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+        pygame.display.update()
+        clock.tick(15)
+        return True
 
 # runner
 while True:
@@ -36,8 +67,4 @@ while True:
             pygame.quit()
             sys.exit()
     pygame.display.update()
-    clock.tick(1)
-
-
-        
-def chooseMode
+    clock.tick(15)
