@@ -21,7 +21,7 @@ def start_menu():
         screen.blit(hellotext,(5,5))    #test text
         screen.blit(background,(-150,50)) #blit the background
 
-        button_text = font.render("Start!",True,'Blue') # start button text
+        button_text = font.render("Start!",True,'Red') # start button text
         screen.blit(button_text,(500,10))
 
         start_button = create_button(500,10,button_text.get_width(),button_text.get_height(),'Blue','Blue')
@@ -46,12 +46,13 @@ def create_button(x, y, width, height, activecolor, inactivecolor): # text = wha
         if click[0] == 1:
             return True                                         #when the click is on the button move to player choosing screen
         else:
-            pygame.draw.rect(screen, activecolor,(x,y,width,height))
+            pygame.draw.rect(screen, activecolor,(x,y,width,height)) #when not hovering keep it dormant
 
 
-def player_select():
+def player_select(): # second screen
     while True:
         screen.fill('Black')
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
