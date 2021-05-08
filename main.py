@@ -14,6 +14,9 @@ class Board():
         #Initialise the 100 board tile nodes
         self.board.addNodes([i for i in range(101)])
 
+        #Position of each tile
+        self.position = self.__FindTilePositions()
+
         #Create a board with nth tile connecting to n+1th tile
         self.__CreateTileEdges()
         
@@ -23,18 +26,22 @@ class Board():
         #Add Snake Edges
         self.__addSnakes()
 
+        pprint(self.board.graph)
+
     # A private method to create tiles
     def __CreateTileEdges(self):
-        position = self.__FindTilePositions()
         edges = []
         
         for n in range(100):
-            edges.append((n, n+1, position[n+1]))
+            edges.append((n, n+1, self.position[n+1]))
         self.board.addEdges(edges, True) 
 
     #function to add kabootars
     def __addKabootars(self):
-        kabootars = []
+        kabootars = [(5, 15, self.position[15]),
+                    (2, 28, self.position[28]),
+                    (12, 29, self.position[29]),
+                    (20, 38, self.position[38]),]
         self.board.addEdges(kabootars, True)
     
     #function to add snakes
@@ -88,6 +95,29 @@ class Player(Board):
         self.x = self.board.graph[self.current_pos][0][1][0]
         self.y = self.board.graph[self.current_pos][0][1][1]
         self.screen.blit(self.image, (self.x, self.y))
+
+    def onKabootarSnake(self):
+        #Check if it has more than 1 out neighbour
+        if len(self.board.getNeighbours(self.current_pos+1)) > 1:
+            return True
+        return False
+
+    def moveKabootarSnake(self):
+        #Check if it has more than 1 out neighbour
+        KabootarSnake = self.board.getNeighbours(self.current_pos+1)[1]
+        # KabootarSnakePos = self.position[KabootarSnake]
+
+        # gradient = self.__getGradient(self.position[self.current_pos], KabootarSnakePos)
+
+        # print(self.current_pos, self.position[self.current_pos], KabootarSnake, KabootarSnakePos, gradient)
+
+        self.current_pos = KabootarSnake
+
+    def __getGradient(self, node1, node2):
+        x = node2[0] - node1[0]
+        y = node2[1] - node1[1]
+        return (y/x)
+ 
 
 #Time class
 class Time():
@@ -144,18 +174,9 @@ class Game():
         for i in range(total_players): 
             self.players.enQueue(Player(i+1))
 
-    def __CreateBoard(self):
-        self.board = Board()
-        snakes = [] #edges for all the snakes
-        kabootars = [(35, 10, (0, 0))] #edges for all the kabootars
-
-        self.board.add_kabootars(kabootars)
-        self.board.add_snakes(snakes)
-
     def DrawScreen(self):
         self.screen.fill((45, 48, 51)) #draw a background of color (r, g, b)
         self.screen.blit(self.background, (0,0)) #draw background image
-
 
 
 game = Game()
@@ -170,6 +191,8 @@ while running: #checks if game is still running
             running = False #sets running to False so the game breaks
         if event.type == pygame.KEYDOWN: 
             if event.key == pygame.K_SPACE: #if space pressed then,
+
+                #Move the player
                 num = game.kismat.roll()
                 curr_player = game.players.deQueue()
                 print(f'Player {curr_player.player_num} pressed Space and rolled {num}')
@@ -185,6 +208,19 @@ while running: #checks if game is still running
                     pygame.display.update()
                     game.DrawScreen()
                 game.players.enQueue(curr_player)
+
+                # Check if current position has a snake or a ladder
+                if curr_player.onKabootarSnake():
+                    time.sleep(0.5)
+                    curr_player.moveKabootarSnake()
+                    for player in game.players.q:
+                        player.draw()
+                        curr_player.draw()
+
+                    pygame.display.update()
+                    game.DrawScreen()
+
+                    print('Standing on a snake/kabootar')
 
     for player in game.players.q:
         player.draw()
