@@ -68,7 +68,7 @@ class Player(Board):
         self.screen.blit(self.image, (self.x, self.y))
 
 #Main Game Class
-class Game(Player):
+class Game():
     def __init__(self):
         #initializes pygame
         pygame.init()
