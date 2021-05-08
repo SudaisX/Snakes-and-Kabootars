@@ -14,6 +14,7 @@ class Board():
         self.edges = self.__create_tiles(370, 70, 660, 70)
         self.board.addNodes(self.tiles)
         self.board.addEdges(self.edges, True) 
+        # pprint(self.board.graph)
 
     # A private method to create tiles
     def __create_tiles(self, x, x_change, y, y_change):
@@ -67,6 +68,21 @@ class Player(Board):
         self.y = self.board.graph[self.current_pos][0][1][1]
         self.screen.blit(self.image, (self.x, self.y))
 
+#Time class
+class Time():
+    pass #Time elepased
+
+#Dice class
+class Kismat():
+    #TODO: Need to add visualisation to it
+    def __init__(self):
+        self.kismat = randint(1, 6)
+
+    def roll(self):
+        self.kismat = randint(1, 6)
+        return self.kismat
+
+
 #Main Game Class
 class Game():
     def __init__(self):
@@ -86,6 +102,9 @@ class Game():
 
         #Create Players
         self.__CreatePlayers()
+
+        #Kismat
+        self.kismat = Kismat()
 
     def __BackgroundMusic(self):
         #Background music
@@ -117,23 +136,6 @@ class Game():
         self.screen.blit(self.background, (0,0)) #draw background image
 
 
-#Time class
-class Time():
-    pass
-
-#Dice class
-class Kismat():
-    def __init__(self):
-        self.kismat = randint(1, 6)
-
-    def roll(self):
-        self.kismat = randint(1, 6)
-        return self.kismat
-
-
-# Initialising Kismat
-kismat = Kismat()
-
 
 game = Game()
 #Game loop
@@ -147,7 +149,7 @@ while running: #checks if game is still running
             running = False #sets running to False so the game breaks
         if event.type == pygame.KEYDOWN: 
             if event.key == pygame.K_SPACE: #if space pressed then,
-                num = kismat.roll()
+                num = game.kismat.roll()
                 curr_player = game.players.deQueue()
                 print(f'Player {curr_player.player_num} pressed Space and rolled {num}')
                 for i in range(num):
