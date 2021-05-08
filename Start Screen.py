@@ -12,11 +12,12 @@ pygame.display.set_caption('HU Kabootars les gooo')
         #BAckground
 background = pygame.image.load(r"images\Kabootars\memeKabootar.jpg")
         #font
-font = pygame.font.SysFont('Arial',30)
+font = pygame.font.SysFont('Fipps',30)
 
 def start_menu():
     hellotext = font.render('Hello',True, 'white')
     while True: #keeps running after called
+        pygame.event.get()
         screen.fill("black")  #default colour
         screen.blit(hellotext,(5,5))    #test text
         screen.blit(background,(-150,50)) #blit the background
@@ -30,8 +31,9 @@ def start_menu():
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.display.quit()
                 pygame.quit()
-                sys.exit()
+                exit()
 
         pygame.display.update()
         clock.tick(15)
@@ -51,21 +53,26 @@ def create_button(x, y, width, height, activecolor, inactivecolor): # text = wha
 
 def player_select(): # second screen
     while True:
+        pygame.event.get()
         screen.fill('Black')
-
+        single_player_text = font.render('1 player',True,'Blue')
+        screen.blit(single_player_text,(0,0))
+        single_player = create_button(0,0,single_player_text.get_width(),single_player_text.get_height(),'Yellow','Green')
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.display.quit()
                 pygame.quit()
+                exit()
         pygame.display.update()
         clock.tick(15)
-        return True
 
 # runner
 while True:
     start_menu()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
+            pygame.display.quit()
             pygame.quit()
-            sys.exit()
+            exit()
     pygame.display.update()
     clock.tick(15)
