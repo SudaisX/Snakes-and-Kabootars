@@ -38,15 +38,23 @@ class Board():
 
     #function to add kabootars
     def __addKabootars(self):
-        kabootars = [(5, 15, self.position[15]),
-                    (2, 28, self.position[28]),
-                    (12, 29, self.position[29]),
-                    (20, 38, self.position[38]),]
+        kabootars = [(2, 23, self.position[23]),
+                    (6, 45, self.position[45]),
+                    (20, 59, self.position[59]),
+                    (52, 72, self.position[72]),
+                    (57, 96, self.position[96]),
+                    (71, 92, self.position[92])]
         self.board.addEdges(kabootars, True)
     
     #function to add snakes
     def __addSnakes(self):
-        snakes = []
+        snakes = [(50, 5, self.position[5]),
+                 (56, 8, self.position[8]),
+                 (73, 15, self.position[15]),
+                 (43, 17, self.position[17]),
+                 (98, 40, self.position[40]),
+                 (87, 49, self.position[49]),
+                 (84, 58, self.position[58])]
         self.board.addEdges(snakes, True)
 
     # A private method to find tile positions
@@ -85,7 +93,7 @@ class Player(Board):
         Board.__init__(self)
         self.screen = pygame.display.set_mode((1080, 720))
         self.player_num = player_num
-        self.images = ['images/players/player1.png', 'images/players/zain.png']
+        self.images = ['images/players/player1.png', 'images/players/player2.png', 'images/players/zain.png']
         self.image = pygame.image.load(self.images[player_num-1])
         self.current_pos = 0
         self.x = self.board.graph[self.current_pos][0][1][0]
@@ -111,8 +119,9 @@ class Player(Board):
 
         # print(self.current_pos, self.position[self.current_pos], KabootarSnake, KabootarSnakePos, gradient)
 
+        # self.current_pos = KabootarSnake
         self.current_pos = KabootarSnake
-
+                
     def __getGradient(self, node1, node2):
         x = node2[0] - node1[0]
         y = node2[1] - node1[1]
@@ -213,6 +222,7 @@ while running: #checks if game is still running
                 if curr_player.onKabootarSnake():
                     time.sleep(0.5)
                     curr_player.moveKabootarSnake()
+
                     for player in game.players.q:
                         player.draw()
                         curr_player.draw()
