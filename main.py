@@ -10,17 +10,46 @@ import time
 class Board():
     def __init__(self):
         self.board = Graph()
-        self.tiles = [i for i in range(101)]
-        self.edges = self.__create_tiles(370, 70, 660, 70)
-        self.board.addNodes(self.tiles)
-        self.board.addEdges(self.edges, True) 
-        # pprint(self.board.graph)
+
+        #Initialise the 100 board tile nodes
+        self.board.addNodes([i for i in range(101)])
+
+        #Create a board with nth tile connecting to n+1th tile
+        self.__CreateTileEdges()
+        
+        #Add Kabootar Edges
+        self.__addKabootars()
+        
+        #Add Snake Edges
+        self.__addSnakes()
 
     # A private method to create tiles
-    def __create_tiles(self, x, x_change, y, y_change):
-        x_nodes = []
-        y_nodes = []
-        tiles = []
+    def __CreateTileEdges(self):
+        position = self.__FindTilePositions()
+        edges = []
+        
+        for n in range(100):
+            edges.append((n, n+1, position[n+1]))
+        self.board.addEdges(edges, True) 
+
+    #function to add kabootars
+    def __addKabootars(self):
+        kabootars = []
+        self.board.addEdges(kabootars, True)
+    
+    #function to add snakes
+    def __addSnakes(self):
+        snakes = []
+        self.board.addEdges(snakes, True)
+
+    # A private method to find tile positions
+    def __FindTilePositions(self):
+        x, x_change = 370, 70 # (Initial x, change in x)
+        y, y_change = 660, 70 # (Initial y, change in y)
+        
+        x_nodes = [] #Row X
+        y_nodes = [] #Col Y
+        tiles_pos = {}
 
         for i in range(10):
             x_nodes.append(x)
@@ -33,23 +62,15 @@ class Board():
         for i in range(10):
             if left:
                 for j in range(10):
-                    tiles.append((n, n+1, (x_nodes[j], y_nodes[i])))
+                    tiles_pos[n+1] = (x_nodes[j], y_nodes[i])
                     n+=1
                 left = False
             else:
                 for j in range(9, -1, -1):
-                    tiles.append((n, n+1, (x_nodes[j], y_nodes[i])))
+                    tiles_pos[n+1] = (x_nodes[j], y_nodes[i])
                     n+=1
                 left = True
-        return tiles
-
-    #function to add kabootars
-    def add_kabootars(self, kabootars):
-        self.board.addEdges(kabootars, True)
-    
-    #function to add snakes
-    def add_snakes(self, snakes):
-        self.board.addEdges(snakes, True)
+        return tiles_pos
 
 #Player class
 class Player(Board):
