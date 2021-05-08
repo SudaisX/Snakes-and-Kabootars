@@ -113,15 +113,19 @@ class Player(Board):
     def moveKabootarSnake(self):
         #Check if it has more than 1 out neighbour
         KabootarSnake = self.board.getNeighbours(self.current_pos+1)[1]
-        # KabootarSnakePos = self.position[KabootarSnake]
+        #KabootarSnakePos = self.position[KabootarSnake]
+
+        
 
         # gradient = self.__getGradient(self.position[self.current_pos], KabootarSnakePos)
-
         # print(self.current_pos, self.position[self.current_pos], KabootarSnake, KabootarSnakePos, gradient)
-
-        # self.current_pos = KabootarSnake
         self.current_pos = KabootarSnake
                 
+    def getKabootarSnakePos(self):
+        KabootarSnake = self.board.getNeighbours(self.current_pos+1)[1]
+        KabootarSnakePos = self.position[KabootarSnake]
+        return KabootarSnake, KabootarSnakePos
+
     def __getGradient(self, node1, node2):
         x = node2[0] - node1[0]
         y = node2[1] - node1[1]
@@ -220,8 +224,39 @@ while running: #checks if game is still running
 
                 # Check if current position has a snake or a ladder
                 if curr_player.onKabootarSnake():
-                    time.sleep(0.5)
+                    print('Standing on a snake/kabootar')
                     curr_player.moveKabootarSnake()
+
+                    # kabootar_pos = curr_player.getKabootarSnakePos()[0]
+                    # kabootar_xy = curr_player.getKabootarSnakePos()[1]
+                    # diff_x = kabootar_xy[0] - curr_player.x
+                    # diff_y = kabootar_xy[1] - curr_player.y
+                    
+                    # passed = True
+                    # while passed:
+                    #     diff_x = kabootar_xy[0] - curr_player.x
+                    #     diff_y = kabootar_xy[1] - curr_player.y
+                    #     if diff_x < -15 and diff_y > 15: #when travelling bottom left
+                    #         curr_player.x -= 15
+                    #         curr_player.y += 15
+                    #         print('Bottom left')
+                    #     elif diff_x > 15 and diff_y > 15: #when travelling bottom right
+                    #         curr_player.x += 15
+                    #         curr_player.y += 15
+                    #         print('Bottom right')
+                    #     elif diff_x < -15 and diff_y < -15: #when travelling top left
+                    #         curr_player.x += 15
+                    #         curr_player.y += 15
+                    #         print('top left')
+                    #     elif diff_x > 15 and diff_y < -15: #when travelling top right
+                    #         curr_player.x += 30
+                    #         curr_player.y -= 30
+                    #         print('top right')
+                    #     else: 
+                    #         curr_player.moveKabootarSnake()
+                    #         passed = False
+
+                    time.sleep(0.1)
 
                     for player in game.players.q:
                         player.draw()
@@ -229,8 +264,6 @@ while running: #checks if game is still running
 
                     pygame.display.update()
                     game.DrawScreen()
-
-                    print('Standing on a snake/kabootar')
 
     for player in game.players.q:
         player.draw()
