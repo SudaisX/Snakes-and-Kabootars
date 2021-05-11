@@ -11,8 +11,12 @@ screen = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption('HU Kabootars les gooo')
         #BAckground_start_menu
 background = pygame.image.load(r"images\Kabootars\kabbu.jpg")
+        #Music
+pygame.mixer.music.load('sounds/kabbu.mp3') #('file location')
+pygame.mixer.music.play(-1) #-1 so it plays in a loop
         #font
 font = pygame.font.Font(r'Fonts\Fipps-Regular.otf',20)
+small_font = pygame.font.Font(r'Fonts\Fipps-Regular.otf',10)
 
 def start_menu():
     hellotext = font.render('Hello',True, 'white')
@@ -25,7 +29,15 @@ def start_menu():
 
         button_text = font.render("Start!",True,'White') # start button text
         start_button = create_button(500,50,button_text.get_width(),button_text.get_height(),'Gold','Purple')
-        screen.blit(button_text,(500,50))
+        screen.blit(button_text,(500,50)) # start button blit on screen
+
+        credit_text = font.render("Credits",True,'White')
+        credits_button = create_button(600,100,credit_text.get_width(),credit_text.get_height(),'Gold','Purple')
+        screen.blit(credit_text,(600,100))
+        
+        if credits_button:
+            credit()
+
 
         if start_button:
             player_select()
@@ -50,21 +62,61 @@ def create_button(x, y, width, height, activecolor, inactivecolor): # text = wha
     else:
         pygame.draw.rect(screen, inactivecolor,(x,y,width,height)) #when not hovering keep it dormant
 
+def credit(): # goes to credit screen (includes back button)
+    running = True
+    while running:
+        pygame.event.get()
+        screen.fill('Black')
+        screen.blit(background,(-500,-100))
+        
+        credits_1 = font.render('Zain Ahmed Usmani',True,'White')
+        credits_2 = font.render('Sudais Yasin',True,'White')
+        credits_3 = font.render('Murtaza Ali Khokhar',True,'White')
+        pygame.draw.rect(screen,'Gold',(300,200,credits_3.get_width(),credits_3.get_height()))
+        pygame.draw.rect(screen,'Gold',(300,300,credits_3.get_width(),credits_3.get_height()))
+        pygame.draw.rect(screen,'Gold',(300,400,credits_3.get_width(),credits_3.get_height()))
+        screen.blit(credits_1,(300,200))
+        screen.blit(credits_2,(300,300))
+        screen.blit(credits_3,(300,400))
+
+        back = font.render('BACK',True,'White')
+        back_button = create_button(100,100,back.get_width(),back.get_height(),'Gold','Purple')
+        screen.blit(back,(100,100))
+
+        if back_button:
+            running = False
+            start_menu()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        pygame.display.update()
+        clock.tick(15)
 
 def player_select(): # second screen
     running = True
     while running:
         pygame.event.get()
-        screen.fill('Black')  
-        screen.blit(background,(-500,-100))  
-        single_player_text = font.render('1 player',True,'White')
-        double_player_text = font.render('2 players',True,'White')
-        player_select_prompt = font.render('How many players will be playing?',True,'White')
+        screen.fill('Black')
+        screen.blit(background,(-500,-100))
+        single_player_text = font.render('1 player',True,'White') # single player mode text
+        double_player_text = font.render('2 players',True,'White') # dual player mode text
+
+        player_select_prompt = font.render('How many players will be playing?',True,'White') # prompt text
         screen.blit(player_select_prompt,(125,300))
+
         single_player = create_button(150,500,single_player_text.get_width(),single_player_text.get_height(),'Gold','Purple')
-        screen.blit(single_player_text,(150,500))
+        screen.blit(single_player_text,(150,500)) # single player button blit
+
+        if single_player: # move to single player mode
+            game(1)
+        
         double_player = create_button(450,500,double_player_text.get_width(),double_player_text.get_height(),'Gold',"Purple")
-        screen.blit(double_player_text,(450,500))
+        screen.blit(double_player_text,(450,500)) # double player button blit
+
+        if double_player: # move to double player mode
+            game(2)
+        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running =False
