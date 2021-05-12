@@ -138,9 +138,114 @@ class Time():
 
 #Dice class
 class Kismat():
-    #TODO: Need to add visualisation to it
-    def __init__(self):
+    def __init__(self, screen):
+        self.tabs = {}
+
+        #Display Screen
+        self.screen = screen
+
+        #Tab Colors
+        self._colors = ('#32a852', '#a83157', '#2e2ea3', '#a69430', '#a32f2f', '#772d9c')
+        self.colors = list(self._colors)
+
+        # Tab Height and Width
+        self.tabHeight = 40
+        self.tabWidth = 100
+
+        # Arrow image
+        self.arrowImg = pygame.image.load(r'images\arrow.png')
+
+        # Tab number font
+        self.numFont = pygame.font.Font(None, 20)
+
         self.kismat = randint(1, 6)
+
+    def __assignTabs(self, x, y):
+        """
+        Initializes the tabs_dictionary
+        tabs[dice_roll] = (x_coord of blit, y_coord of blit + TAB_HEIGHT)
+        """
+        d_rolls = []  # this block of code can be commented out
+        # and some modifications can be made to get tabs that are in fixed orders
+        while (len(d_rolls) != 6):
+            roll = randint(1, 6)
+            if roll not in d_rolls:
+                d_rolls.append(roll)
+
+        for index in range(6):
+            self.tabs[d_rolls[index]] = (x, y + self.tabHeight*(index+1))
+
+    def __renderTabs(self, x, y):
+        # x, y -> (x,y) coordinates of the top left pixel of the arrow
+        
+        if len(self.tabs) == 0:
+            self.__assignTabs(x, y)
+
+        cum_height = 0
+        x_spacing = self.arrowImg.get_size()[0] + 5
+
+        x_tab_begin = x + x_spacing
+        
+        for bar in self.tabs:
+            if bar != 0:
+                tab = pygame.draw.rect(self.screen, self.colors[bar-1], [x_tab_begin, y+cum_height, self.tabWidth, self.tabHeight])
+                
+                roll = self.numFont.render(str(bar), True, "White")
+                roll_rect = roll.get_rect(center = tab.center)
+                self.screen.blit(roll, roll_rect)
+                cum_height += self.tabHeight
+        # return tabs
+
+    def __drawArrow(self, startX, startY):
+        self.screen.blit(self.arrowImg, (startX, startY))
+
+    def Qismat(self, x, y):
+        self.__renderTabs(x, y)
+
+        attempted = False
+        _attempted = False
+        motion = 1
+        yPos = y
+
+        while not(attempted):
+            for event in pygame.event.get():
+                if event.type == pygame.KEYUP:
+                    if event.key == pygame.K_SPACE:
+                        _attempted = True
+
+            game.DrawScreen()
+            self.__renderTabs(x, y)
+            self.__drawArrow(x, yPos - 16)
+
+            if motion == 1:
+                heightChange = 5
+            elif motion == -1:
+                heightChange = -5
+            
+            yPos += heightChange
+
+            if yPos > y + self.tabHeight*6:
+                motion = -1
+            elif yPos < y:
+                motion = 1
+
+            if _attempted:
+                return yPos
+                #attempted = True
+            
+            for player in game.players.q:
+                player.draw()
+
+            pygame.display.update()
+            # clock.tick(120)
+
+    def QismatCalc(self, stoppingHeight):
+        self.tabs[0] = (0,0)
+        print("stoppingHeight:", stoppingHeight)
+
+        for roll in self.tabs:
+            if (self.tabs[roll][1] >= stoppingHeight) and stoppingHeight > self.tabs[roll-1][1]:
+                return roll
 
     def roll(self):
         self.kismat = randint(1, 6)
@@ -168,7 +273,7 @@ class Game():
         self.__CreatePlayers()
 
         #Kismat
-        self.kismat = Kismat()
+        self.kismat = Kismat(self.screen)
 
     def __BackgroundMusic(self):
         #Background music
@@ -193,6 +298,7 @@ class Game():
 
 
 game = Game()
+kismat = Kismat(game.screen)
 #Game loop
 running = True #Initialise with True to run the gamme
 while running: #checks if game is still running
@@ -203,11 +309,14 @@ while running: #checks if game is still running
         if event.type == pygame.QUIT: #Checks if the X button has been pressed on the window, if yes then
             running = False #sets running to False so the game breaks
         if event.type == pygame.KEYDOWN: 
-            if event.key == pygame.K_SPACE: #if space pressed then,
+            if event.key == pygame.K_TAB: #if space pressed then,
 
                 #Move the player
-                num = game.kismat.roll()
+                # num = game.kismat.roll()
+                num = game.kismat.QismatCalc(game.kismat.Qismat(0,300))
+                
                 curr_player = game.players.deQueue()
+                game.players.enQueue(curr_player)
                 print(f'Player {curr_player.player_num} pressed Space and rolled {num}')
                 for i in range(num):
                     time.sleep(0.5) #time delay between each player moving
@@ -216,45 +325,15 @@ while running: #checks if game is still running
 
                     for player in game.players.q:
                         player.draw()
-                        curr_player.draw()
+                        # curr_player.draw()
 
                     pygame.display.update()
                     game.DrawScreen()
-                game.players.enQueue(curr_player)
 
                 # Check if current position has a snake or a ladder
                 if curr_player.onKabootarSnake():
                     print('Standing on a snake/kabootar')
                     curr_player.moveKabootarSnake()
-
-                    # kabootar_pos = curr_player.getKabootarSnakePos()[0]
-                    # kabootar_xy = curr_player.getKabootarSnakePos()[1]
-                    # diff_x = kabootar_xy[0] - curr_player.x
-                    # diff_y = kabootar_xy[1] - curr_player.y
-                    
-                    # passed = True
-                    # while passed:
-                    #     diff_x = kabootar_xy[0] - curr_player.x
-                    #     diff_y = kabootar_xy[1] - curr_player.y
-                    #     if diff_x < -15 and diff_y > 15: #when travelling bottom left
-                    #         curr_player.x -= 15
-                    #         curr_player.y += 15
-                    #         print('Bottom left')
-                    #     elif diff_x > 15 and diff_y > 15: #when travelling bottom right
-                    #         curr_player.x += 15
-                    #         curr_player.y += 15
-                    #         print('Bottom right')
-                    #     elif diff_x < -15 and diff_y < -15: #when travelling top left
-                    #         curr_player.x += 15
-                    #         curr_player.y += 15
-                    #         print('top left')
-                    #     elif diff_x > 15 and diff_y < -15: #when travelling top right
-                    #         curr_player.x += 30
-                    #         curr_player.y -= 30
-                    #         print('top right')
-                    #     else: 
-                    #         curr_player.moveKabootarSnake()
-                    #         passed = False
 
                     time.sleep(0.1)
 
