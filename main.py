@@ -5,7 +5,6 @@ from dsa import Graph, Stack, Queue
 from pprint import pprint
 from random import randint
 import time
-
 # Board Class
 
 
@@ -190,9 +189,10 @@ class Game():
         pygame.display.set_icon(icon)  # display icon
 
     def __CreatePlayers(self):
+        from main_menu import players
         # Initialising Players
         total_players = int(
-            input("How many players? Enter a number between 2-4\n"))
+        players)
         self.players = Queue()
         for i in range(total_players):
             self.players.enQueue(Player(i+1))

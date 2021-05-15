@@ -33,13 +33,13 @@ def start_menu():
         # screen.blit(start_text, (500, 50))  # start button blit on screen
         # start_button_width, start_button_height = button_padding(start_text)
         start_button = button("Start",
-                              WIDTH/3, HEIGHT/6, 120, 50, 'Gold', 'Purple')
+                              (WIDTH/1.5) - 75, (HEIGHT/2) - 15, 120, 50, 'Gold', 'Purple')
         # screen.blit(start_text, (500, 50))  # start button blit on screen
 
         credit_text = font.render("Credits", True, 'White')
         credits_button = create_button(
-            600, 100, credit_text.get_width(), credit_text.get_height(), 'Gold', 'Purple')
-        screen.blit(credit_text, (600, 100))
+            650, (HEIGHT/2) - 15, credit_text.get_width(), credit_text.get_height(), 'Gold', 'Purple')
+        screen.blit(credit_text, (650, (HEIGHT/2) - 15))
 
         if credits_button:
             credit()
@@ -148,6 +148,7 @@ def credit():  # goes to credit screen (includes back button)
 
 
 def player_select():  # second screen
+    global players
     running = True
     while running:
         pygame.event.get()
@@ -157,27 +158,41 @@ def player_select():  # second screen
             '1 player', True, 'White')  # single player mode text
         double_player_text = font.render(
             '2 players', True, 'White')  # dual player mode text
+        triple_player_text = font.render(
+            '3 players',True,'White')  # triple player mode text
 
         player_select_prompt = font.render(
             'How many players will be playing?', True, 'White')  # prompt text
         screen.blit(player_select_prompt, (125, 300))
 
-        single_player = create_button(150, 500, single_player_text.get_width(
-        ), single_player_text.get_height(), 'Gold', 'Purple')
+        single_player = create_button(50, 500, single_player_text.get_width(
+        ) + 20, single_player_text.get_height(), 'Gold', 'Purple')
         # single player button blit
-        screen.blit(single_player_text, (150, 500))
+        screen.blit(single_player_text, (60, 500))
 
         if single_player:  # move to single player mode
             # game(1)
+            players = 1
             main.main()
+            
 
-        double_player = create_button(450, 500, double_player_text.get_width(
-        ), double_player_text.get_height(), 'Gold', "Purple")
+        double_player = create_button(300, 500, double_player_text.get_width(
+        ) + 20, double_player_text.get_height(), 'Gold', "Purple")
         # double player button blit
-        screen.blit(double_player_text, (450, 500))
+        screen.blit(double_player_text, (310, 500))
 
         if double_player:  # move to double player mode
-            game(2)
+            players = 2
+            main.main()
+
+        triple_player = create_button(550, 500, triple_player_text.get_width(
+        ) + 20, triple_player_text.get_height(), 'Gold', "Purple")
+        # double player button blit
+        screen.blit(triple_player_text, (560, 500))
+
+        if triple_player:  # move to double player mode
+            players = 3
+            main.main()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
