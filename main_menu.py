@@ -1,6 +1,7 @@
 import sys
 import pygame
 import main
+import config
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -159,7 +160,7 @@ def player_select():  # second screen
         double_player_text = font.render(
             '2 players', True, 'White')  # dual player mode text
         triple_player_text = font.render(
-            '3 players',True,'White')  # triple player mode text
+            '3 players', True, 'White')  # triple player mode text
 
         player_select_prompt = font.render(
             'How many players will be playing?', True, 'White')  # prompt text
@@ -172,9 +173,8 @@ def player_select():  # second screen
 
         if single_player:  # move to single player mode
             # game(1)
-            players = 1
+            config.players = 1
             main.main()
-            
 
         double_player = create_button(300, 500, double_player_text.get_width(
         ) + 20, double_player_text.get_height(), 'Gold', "Purple")
@@ -182,7 +182,7 @@ def player_select():  # second screen
         screen.blit(double_player_text, (310, 500))
 
         if double_player:  # move to double player mode
-            players = 2
+            config.players = 2
             main.main()
 
         triple_player = create_button(550, 500, triple_player_text.get_width(
@@ -191,7 +191,7 @@ def player_select():  # second screen
         screen.blit(triple_player_text, (560, 500))
 
         if triple_player:  # move to double player mode
-            players = 3
+            config.players = 3
             main.main()
 
         for event in pygame.event.get():

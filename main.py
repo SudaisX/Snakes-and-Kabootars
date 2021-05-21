@@ -1,29 +1,32 @@
-#imports
+# imports
 import pygame
 from pygame import mixer
 from dsa import Graph, Stack, Queue
 from pprint import pprint
 from random import randint
 import time
+import config
 
-#Board Class
+# Board Class
+
+
 class Board():
     def __init__(self):
         self.board = Graph()
 
-        #Initialise the 100 board tile nodes
+        # Initialise the 100 board tile nodes
         self.board.addNodes([i for i in range(101)])
 
-        #Position of each tile
+        # Position of each tile
         self.position = self.__FindTilePositions()
 
-        #Create a board with nth tile connecting to n+1th tile
+        # Create a board with nth tile connecting to n+1th tile
         self.__CreateTileEdges()
-        
-        #Add Kabootar Edges
+
+        # Add Kabootar Edges
         self.__addKabootars()
-        
-        #Add Snake Edges
+
+        # Add Snake Edges
         self.__addSnakes()
 
         pprint(self.board.graph)
@@ -31,39 +34,39 @@ class Board():
     # A private method to create tiles
     def __CreateTileEdges(self):
         edges = []
-        
+
         for n in range(100):
             edges.append((n, n+1, self.position[n+1]))
-        self.board.addEdges(edges, True) 
+        self.board.addEdges(edges, True)
 
-    #function to add kabootars
+    # function to add kabootars
     def __addKabootars(self):
         kabootars = [(2, 23, self.position[23]),
-                    (6, 45, self.position[45]),
-                    (20, 59, self.position[59]),
-                    (52, 72, self.position[72]),
-                    (57, 96, self.position[96]),
-                    (71, 92, self.position[92])]
+                     (6, 45, self.position[45]),
+                     (20, 59, self.position[59]),
+                     (52, 72, self.position[72]),
+                     (57, 96, self.position[96]),
+                     (71, 92, self.position[92])]
         self.board.addEdges(kabootars, True)
-    
-    #function to add snakes
+
+    # function to add snakes
     def __addSnakes(self):
         snakes = [(50, 5, self.position[5]),
-                 (56, 8, self.position[8]),
-                 (73, 15, self.position[15]),
-                 (43, 17, self.position[17]),
-                 (98, 40, self.position[40]),
-                 (87, 49, self.position[49]),
-                 (84, 58, self.position[58])]
+                  (56, 8, self.position[8]),
+                  (73, 15, self.position[15]),
+                  (43, 17, self.position[17]),
+                  (98, 40, self.position[40]),
+                  (87, 49, self.position[49]),
+                  (84, 58, self.position[58])]
         self.board.addEdges(snakes, True)
 
     # A private method to find tile positions
     def __FindTilePositions(self):
-        x, x_change = 370, 70 # (Initial x, change in x)
-        y, y_change = 660, 70 # (Initial y, change in y)
-        
-        x_nodes = [] #Row X
-        y_nodes = [] #Col Y
+        x, x_change = 370, 70  # (Initial x, change in x)
+        y, y_change = 660, 70  # (Initial y, change in y)
+
+        x_nodes = []  # Row X
+        y_nodes = []  # Col Y
         tiles_pos = {}
 
         for i in range(10):
@@ -78,49 +81,50 @@ class Board():
             if left:
                 for j in range(10):
                     tiles_pos[n+1] = (x_nodes[j], y_nodes[i])
-                    n+=1
+                    n += 1
                 left = False
             else:
                 for j in range(9, -1, -1):
                     tiles_pos[n+1] = (x_nodes[j], y_nodes[i])
-                    n+=1
+                    n += 1
                 left = True
         return tiles_pos
 
-#Player class
+# Player class
+
+
 class Player(Board):
     def __init__(self, player_num):
         Board.__init__(self)
         self.screen = pygame.display.set_mode((1080, 720))
         self.player_num = player_num
-        self.images = ['images/players/player1.png', 'images/players/player2.png', 'images/players/zain.png']
+        self.images = ['images/players/player1.png',
+                       'images/players/player2.png', 'images/players/zain.png']
         self.image = pygame.image.load(self.images[player_num-1])
         self.current_pos = 0
         self.x = self.board.graph[self.current_pos][0][1][0]
         self.y = self.board.graph[self.current_pos][0][1][1]
 
-    def draw(self): #draw method
+    def draw(self):  # draw method
         self.x = self.board.graph[self.current_pos][0][1][0]
         self.y = self.board.graph[self.current_pos][0][1][1]
         self.screen.blit(self.image, (self.x, self.y))
 
     def onKabootarSnake(self):
-        #Check if it has more than 1 out neighbour
+        # Check if it has more than 1 out neighbour
         if len(self.board.getNeighbours(self.current_pos+1)) > 1:
             return True
         return False
 
     def moveKabootarSnake(self):
-        #Check if it has more than 1 out neighbour
+        # Check if it has more than 1 out neighbour
         KabootarSnake = self.board.getNeighbours(self.current_pos+1)[1]
         #KabootarSnakePos = self.position[KabootarSnake]
-
-        
 
         # gradient = self.__getGradient(self.position[self.current_pos], KabootarSnakePos)
         # print(self.current_pos, self.position[self.current_pos], KabootarSnake, KabootarSnakePos, gradient)
         self.current_pos = KabootarSnake
-                
+
     def getKabootarSnakePos(self):
         KabootarSnake = self.board.getNeighbours(self.current_pos+1)[1]
         KabootarSnakePos = self.position[KabootarSnake]
@@ -130,22 +134,25 @@ class Player(Board):
         x = node2[0] - node1[0]
         y = node2[1] - node1[1]
         return (y/x)
- 
 
-#Time class
+
+# Time class
 class Time():
-    pass #Time elepased
+    pass  # Time elepased
 
-#Dice class
+# Dice class
+
+
 class Kismat():
     def __init__(self, screen):
         self.tabs = {}
 
-        #Display Screen
+        # Display Screen
         self.screen = screen
 
-        #Tab Colors
-        self._colors = ('#32a852', '#a83157', '#2e2ea3', '#a69430', '#a32f2f', '#772d9c')
+        # Tab Colors
+        self._colors = ('#32a852', '#a83157', '#2e2ea3',
+                        '#a69430', '#a32f2f', '#772d9c')
         self.colors = list(self._colors)
 
         # Tab Height and Width
@@ -177,7 +184,7 @@ class Kismat():
 
     def __renderTabs(self, x, y):
         # x, y -> (x,y) coordinates of the top left pixel of the arrow
-        
+
         if len(self.tabs) == 0:
             self.__assignTabs(x, y)
 
@@ -185,13 +192,14 @@ class Kismat():
         x_spacing = self.arrowImg.get_size()[0] + 5
 
         x_tab_begin = x + x_spacing
-        
+
         for bar in self.tabs:
             if bar != 0:
-                tab = pygame.draw.rect(self.screen, self.colors[bar-1], [x_tab_begin, y+cum_height, self.tabWidth, self.tabHeight])
-                
+                tab = pygame.draw.rect(
+                    self.screen, self.colors[bar-1], [x_tab_begin, y+cum_height, self.tabWidth, self.tabHeight])
+
                 roll = self.numFont.render(str(bar), True, "White")
-                roll_rect = roll.get_rect(center = tab.center)
+                roll_rect = roll.get_rect(center=tab.center)
                 self.screen.blit(roll, roll_rect)
                 cum_height += self.tabHeight
         # return tabs
@@ -221,7 +229,7 @@ class Kismat():
                 heightChange = 5
             elif motion == -1:
                 heightChange = -5
-            
+
             yPos += heightChange
 
             if yPos > y + self.tabHeight*6:
@@ -232,7 +240,7 @@ class Kismat():
             if _attempted:
                 return yPos
                 #attempted = True
-            
+
             for player in game.players.q:
                 player.draw()
 
@@ -240,7 +248,7 @@ class Kismat():
             # clock.tick(120)
 
     def QismatCalc(self, stoppingHeight):
-        self.tabs[0] = (0,0)
+        self.tabs[0] = (0, 0)
         print("stoppingHeight:", stoppingHeight)
 
         for roll in self.tabs:
@@ -252,76 +260,82 @@ class Kismat():
         return self.kismat
 
 
-#Main Game Class
+# Main Game Class
 class Game():
     def __init__(self):
-        #initializes pygame
+        # initializes pygame
         pygame.init()
         print('GAME STARTED! ')
 
-        #screen size and background image
-        self.screen = pygame.display.set_mode((1080, 720)) #creates the screen with the arguments passed as a tuple of (Width, Height)
-        self.background = pygame.image.load('images/backgrounds/newboard.png') #('Location of the background image')
+        # screen size and background image
+        # creates the screen with the arguments passed as a tuple of (Width, Height)
+        self.screen = pygame.display.set_mode((1080, 720))
+        # ('Location of the background image')
+        self.background = pygame.image.load('images/backgrounds/newboard.png')
 
         #icon and title
         self.__SetIconTitle()
 
-        #Background music
+        # Background music
         self.__BackgroundMusic()
 
-        #Create Players
+        # Create Players
         self.__CreatePlayers()
 
-        #Kismat
+        # Kismat
         self.kismat = Kismat(self.screen)
 
     def __BackgroundMusic(self):
-        #Background music
-        mixer.music.load('sounds/kabbu.mp3') #('file location')
-        mixer.music.play(-1) #-1 so it plays in a loop
+        # Background music
+        mixer.music.load('sounds/kabbu.mp3')  # ('file location')
+        mixer.music.play(-1)  # -1 so it plays in a loop
 
     def __SetIconTitle(self):
-        icon = pygame.image.load('images/players/player1.png') #('icon location')
-        pygame.display.set_caption('Kabib ke Habootars') #('Title of the game)
-        pygame.display.set_icon(icon) #display icon
+        icon = pygame.image.load(
+            'images/players/player1.png')  # ('icon location')
+        pygame.display.set_caption(
+            'Kabib ke Habootars')  # ('Title of the game)
+        pygame.display.set_icon(icon)  # display icon
 
     def __CreatePlayers(self):
-        #Initialising Players
-        total_players = int(input("How many players? Enter a number between 2-4\n"))
+        # Initialising Players
+        # total_players = int(input("How many players? Enter a number between 2-4\n"))
+        total_players = config.players
         self.players = Queue()
-        for i in range(total_players): 
+        for i in range(total_players):
             self.players.enQueue(Player(i+1))
 
     def DrawScreen(self):
-        self.screen.fill((45, 48, 51)) #draw a background of color (r, g, b)
-        self.screen.blit(self.background, (0,0)) #draw background image
+        self.screen.fill((45, 48, 51))  # draw a background of color (r, g, b)
+        self.screen.blit(self.background, (0, 0))  # draw background image
 
 
 game = Game()
 kismat = Kismat(game.screen)
-#Game loop
-running = True #Initialise with True to run the gamme
-while running: #checks if game is still running
+# Game loop
+running = True  # Initialise with True to run the gamme
+while running:  # checks if game is still running
     game.DrawScreen()
 
-    #Check keystrokes
-    for event in pygame.event.get(): #iterates through all the eventss in event.get()
-        if event.type == pygame.QUIT: #Checks if the X button has been pressed on the window, if yes then
-            running = False #sets running to False so the game breaks
-        if event.type == pygame.KEYDOWN: 
-            if event.key == pygame.K_TAB: #if space pressed then,
+    # Check keystrokes
+    for event in pygame.event.get():  # iterates through all the eventss in event.get()
+        if event.type == pygame.QUIT:  # Checks if the X button has been pressed on the window, if yes then
+            running = False  # sets running to False so the game breaks
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_TAB:  # if space pressed then,
 
-                #Move the player
+                # Move the player
                 # num = game.kismat.roll()
-                num = game.kismat.QismatCalc(game.kismat.Qismat(0,300))
-                
+                num = game.kismat.QismatCalc(game.kismat.Qismat(0, 300))
+
                 curr_player = game.players.deQueue()
                 game.players.enQueue(curr_player)
-                print(f'Player {curr_player.player_num} pressed Space and rolled {num}')
+                print(
+                    f'Player {curr_player.player_num} pressed Space and rolled {num}')
                 for i in range(num):
-                    time.sleep(0.5) #time delay between each player moving
-                    
-                    curr_player.current_pos += 1 #changing n position of time 
+                    time.sleep(0.5)  # time delay between each player moving
+
+                    curr_player.current_pos += 1  # changing n position of time
 
                     for player in game.players.q:
                         player.draw()
@@ -347,4 +361,4 @@ while running: #checks if game is still running
     for player in game.players.q:
         player.draw()
 
-    pygame.display.update() #updates display within the loop
+    pygame.display.update()  # updates display within the loop
