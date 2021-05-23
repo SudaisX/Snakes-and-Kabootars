@@ -6,12 +6,13 @@ pygame.init()
 clock = pygame.time.Clock()
 
 # Screen
-WIDTH = 800
+WIDTH = 1080
 HEIGHT = 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('HU Kabootars les gooo')
 # Background_start_menu
 background = pygame.image.load(r"images\backgrounds\menu_bg.jpg")
+background = pygame.transform.scale(background, (1080,720))
 # Music
 pygame.mixer.music.load('sounds/kabbu.mp3')  # ('file location')
 pygame.mixer.music.play(-1)  # -1 so it plays in a loop
@@ -34,14 +35,20 @@ def start_menu():
 
         credit_text = font.render(" Credits ", True, 'White')
         credits_button = create_button(
-            650, (HEIGHT/2) - 15, credit_text.get_width(), credit_text.get_height(), 'Gold', 'Purple')
-        screen.blit(credit_text, (650, (HEIGHT/2) - 15))
+            800, (HEIGHT/2) - 15, credit_text.get_width(), credit_text.get_height(), 'Gold', 'Purple')
+        screen.blit(credit_text, (800, (HEIGHT/2) - 15))
+
+        tutorial_button = button("Tutorial",
+                              (WIDTH/1.5) - 25, (HEIGHT/2) - 75, 150, 50, 'Gold', 'Purple')
 
         if credits_button:
             credit()
 
         if start_button:
             player_select()
+
+        if tutorial_button:
+            tutorial()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -136,6 +143,42 @@ def credit():  # goes to credit screen (includes back button)
         # clock.tick(15)
 
 
+def tutorial():
+    running = True
+    while running:
+        pygame.event.get()
+        screen.fill('Black')
+        screen.blit(background, (0, 0))
+
+        step_1 = font.render(' Press TAB to start a roll', True, 'White')
+        step_2 = font.render(' Press SPACE to select desired number', True, 'White')
+        step_3 = font.render(' Get to the top! ', True, 'White')
+        pygame.draw.rect(
+            screen, 'Black', (300, 200, step_1.get_width(), step_1.get_height()))
+        pygame.draw.rect(
+            screen, 'Black', (300, 300, step_2.get_width(), step_2.get_height()))
+        pygame.draw.rect(
+            screen, 'Black', (300, 400, step_3.get_width(), step_3.get_height()))
+        screen.blit(step_1, (300, 200))
+        screen.blit(step_2, (300, 300))
+        screen.blit(step_3, (300, 400))
+
+        back = font.render(' back ', True, 'White')
+        back_button = create_button(
+            100, 100, back.get_width(), back.get_height(), 'Gold', 'Purple')
+        screen.blit(back, (100, 100))
+
+        if back_button:
+            running = False
+            start_menu()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        pygame.display.update()
+        # clock.tick(15)
+
+
 def player_select():  # second screen
     global players
     running = True
@@ -152,12 +195,12 @@ def player_select():  # second screen
 
         player_select_prompt = font.render(
             'How many players will be playing?', True, 'White')  # prompt text
-        screen.blit(player_select_prompt, (125, 300))
+        screen.blit(player_select_prompt, (250, 300))
 
-        single_player = create_button(50, 500, single_player_text.get_width(
+        single_player = create_button(150, 500, single_player_text.get_width(
         ) + 20, single_player_text.get_height(), 'Gold', 'Purple')
         # single player button blit
-        screen.blit(single_player_text, (60, 500))
+        screen.blit(single_player_text, (160, 500))
 
         if single_player:  # move to single player mode
             # game(1)
@@ -166,20 +209,20 @@ def player_select():  # second screen
             in_menu = False
             game.main(1)
 
-        double_player = create_button(300, 500, double_player_text.get_width(
+        double_player = create_button(450, 500, double_player_text.get_width(
         ) + 20, double_player_text.get_height(), 'Gold', "Purple")
         # double player button blit
-        screen.blit(double_player_text, (310, 500))
+        screen.blit(double_player_text, (460, 500))
 
         if double_player:  # move to double player mode
             # config.players = 2
             in_menu = False
             game.main(2)
 
-        triple_player = create_button(550, 500, triple_player_text.get_width(
+        triple_player = create_button(750, 500, triple_player_text.get_width(
         ) + 20, triple_player_text.get_height(), 'Gold', "Purple")
         # double player button blit
-        screen.blit(triple_player_text, (560, 500))
+        screen.blit(triple_player_text, (760, 500))
 
         if triple_player:  # move to double player mode
             # config.players = 3

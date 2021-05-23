@@ -326,6 +326,7 @@ def main(total_players):
 
                     curr_player = players.players.deQueue()
                     players.players.enQueue(curr_player)
+                    
                     print(
                         f'Player {curr_player.player_num} pressed Space and rolled {num}')
                     for i in range(num):
