@@ -5,7 +5,6 @@ from dsa import Graph, Stack, Queue
 from pprint import pprint
 from random import randint
 import time
-import config
 
 #Display Class
 class Display():

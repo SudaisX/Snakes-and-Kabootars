@@ -1,13 +1,13 @@
 import sys
 import pygame
 import game
-import config
+# import config
 pygame.init()
 clock = pygame.time.Clock()
 
 # Screen
 WIDTH = 800
-HEIGHT = 650
+HEIGHT = 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('HU Kabootars les gooo')
 # Background_start_menu
@@ -161,10 +161,10 @@ def player_select():  # second screen
 
         if single_player:  # move to single player mode
             # game(1)
-            config.players = 1
-            print(config.players)
+            # config.players = 1
+            # print(config.players)
             in_menu = False
-            game.main()
+            game.main(1)
 
         double_player = create_button(300, 500, double_player_text.get_width(
         ) + 20, double_player_text.get_height(), 'Gold', "Purple")
@@ -172,9 +172,9 @@ def player_select():  # second screen
         screen.blit(double_player_text, (310, 500))
 
         if double_player:  # move to double player mode
-            config.players = 2
+            # config.players = 2
             in_menu = False
-            game.main()
+            game.main(2)
 
         triple_player = create_button(550, 500, triple_player_text.get_width(
         ) + 20, triple_player_text.get_height(), 'Gold', "Purple")
@@ -182,10 +182,10 @@ def player_select():  # second screen
         screen.blit(triple_player_text, (560, 500))
 
         if triple_player:  # move to double player mode
-            config.players = 3
+            # config.players = 3
             in_menu = False
             pygame.quit()
-            game.main()
+            game.main(3)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
