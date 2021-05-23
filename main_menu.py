@@ -1,6 +1,7 @@
 import sys
 import pygame
 import game
+import os
 import config
 pygame.init()
 clock = pygame.time.Clock()
@@ -174,10 +175,10 @@ def player_select():  # second screen
 
         if single_player:  # move to single player mode
             # game(1)
-            config.players = 1
-            print(config.players)
+            # config.players = 1
+            # print(config.players)
             running = False
-            game.main()
+            game.main(1)
 
         double_player = create_button(300, 500, double_player_text.get_width(
         ) + 20, double_player_text.get_height(), 'Gold', "Purple")
@@ -185,8 +186,9 @@ def player_select():  # second screen
         screen.blit(double_player_text, (310, 500))
 
         if double_player:  # move to double player mode
-            config.players = 2
-            game.main()
+            # config.players = 2
+            running = False
+            game.main(2)
 
         triple_player = create_button(550, 500, triple_player_text.get_width(
         ) + 20, triple_player_text.get_height(), 'Gold', "Purple")
@@ -194,8 +196,9 @@ def player_select():  # second screen
         screen.blit(triple_player_text, (560, 500))
 
         if triple_player:  # move to double player mode
-            config.players = 3
-            game.main()
+            # config.players = 3
+            running = False
+            game.main(3)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -216,6 +219,5 @@ def main():
                 exit()
         pygame.display.update()
         clock.tick(15)
-
 
 main()
