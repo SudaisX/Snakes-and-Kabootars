@@ -55,7 +55,7 @@ class Board():
         kabootars = [(3, 25, self.position[25]),
                      (28, 77, self.position[77]),
                      (69, 88, self.position[59]),
-                     (80, 99, self.position[99]), ]
+                     (80, 99, self.position[99])]
         self.board.addEdges(kabootars, True)
 
     # function to add snakes

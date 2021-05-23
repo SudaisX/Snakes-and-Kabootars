@@ -1,15 +1,13 @@
 import sys
 import pygame
 import game
-import os
 import config
 pygame.init()
 clock = pygame.time.Clock()
 
 # Screen
-WIDTH = 1080
-HEIGHT = 720
-
+WIDTH = 800
+HEIGHT = 650
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('HU Kabootars les gooo')
 # Background_start_menu
@@ -30,16 +28,11 @@ def start_menu():
         screen.fill("black")  # default colour
         # screen.blit(hellotext,(5,5))    #test text
         screen.blit(background, (0, 0))  # blit the background
-        # start_text = font.render("Start!", True, 'White')  # start button text
-        # start_button = create_button(
-        #     500, 50, start_text.get_width(), start_text.get_height(), 'Gold', 'Purple')
-        # screen.blit(start_text, (500, 50))  # start button blit on screen
-        # start_button_width, start_button_height = button_padding(start_text)
+
         start_button = button("Start",
                               (WIDTH/1.5) - 75, (HEIGHT/2) - 15, 120, 50, 'Gold', 'Purple')
-        # screen.blit(start_text, (500, 50))  # start button blit on screen
 
-        credit_text = font.render("Credits", True, 'White')
+        credit_text = font.render(" Credits ", True, 'White')
         credits_button = create_button(
             650, (HEIGHT/2) - 15, credit_text.get_width(), credit_text.get_height(), 'Gold', 'Purple')
         screen.blit(credit_text, (650, (HEIGHT/2) - 15))
@@ -53,17 +46,13 @@ def start_menu():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-                exit()
+                return False
+                # exit()
 
         pygame.display.update()
         # clock.tick(15)
         return True
 
-
-def button_padding(text_box, padding=10):
-    button_width = text_box.get_width() + padding
-    button_height = text_box.get_height() + padding
-    return button_width, button_height
 
 # text = what to write, x = position along x of top left corner of text, y = position along y of top left corner of text, width = width of button, height = height of button, actovecolor = color when hovering, inactivecolor = color when dormant
 
@@ -109,9 +98,6 @@ def button(text, x, y, width, height, activecolor, inactivecolor, text_colour="W
     button_text = font.render(text, True, text_colour)
     button_box = button_text.get_rect(center=((x+(width/2)), (y+(height/2))))
     screen.blit(button_text, button_box)
-    # textSurf, textRect = text_object(text, button_text, text_colour)
-    # textRect.center = ((x+(width/2)), (y+(height/2)))
-    # screen.blit(textSurf, textRect)
 
 
 def credit():  # goes to credit screen (includes back button)
@@ -121,20 +107,20 @@ def credit():  # goes to credit screen (includes back button)
         screen.fill('Black')
         screen.blit(background, (0, 0))
 
-        credits_1 = font.render('Zain Ahmed Usmani', True, 'White')
-        credits_2 = font.render('Sudais Yasin', True, 'White')
-        credits_3 = font.render('Murtaza Ali Khokhar', True, 'White')
+        credits_1 = font.render(' Zain Ahmed Usmani', True, 'White')
+        credits_2 = font.render(' Sudais Yasin', True, 'White')
+        credits_3 = font.render(' Murtaza Ali Khokhar ', True, 'White')
         pygame.draw.rect(
-            screen, 'Gold', (300, 200, credits_3.get_width(), credits_3.get_height()))
+            screen, 'Black', (300, 200, credits_3.get_width(), credits_3.get_height()))
         pygame.draw.rect(
-            screen, 'Gold', (300, 300, credits_3.get_width(), credits_3.get_height()))
+            screen, 'Black', (300, 300, credits_3.get_width(), credits_3.get_height()))
         pygame.draw.rect(
-            screen, 'Gold', (300, 400, credits_3.get_width(), credits_3.get_height()))
+            screen, 'Black', (300, 400, credits_3.get_width(), credits_3.get_height()))
         screen.blit(credits_1, (300, 200))
         screen.blit(credits_2, (300, 300))
         screen.blit(credits_3, (300, 400))
 
-        back = font.render('BACK', True, 'White')
+        back = font.render(' back ', True, 'White')
         back_button = create_button(
             100, 100, back.get_width(), back.get_height(), 'Gold', 'Purple')
         screen.blit(back, (100, 100))
@@ -175,10 +161,10 @@ def player_select():  # second screen
 
         if single_player:  # move to single player mode
             # game(1)
-            # config.players = 1
-            # print(config.players)
-            running = False
-            game.main(1)
+            config.players = 1
+            print(config.players)
+            in_menu = False
+            game.main()
 
         double_player = create_button(300, 500, double_player_text.get_width(
         ) + 20, double_player_text.get_height(), 'Gold', "Purple")
@@ -186,9 +172,9 @@ def player_select():  # second screen
         screen.blit(double_player_text, (310, 500))
 
         if double_player:  # move to double player mode
-            # config.players = 2
-            running = False
-            game.main(2)
+            config.players = 2
+            in_menu = False
+            game.main()
 
         triple_player = create_button(550, 500, triple_player_text.get_width(
         ) + 20, triple_player_text.get_height(), 'Gold', "Purple")
@@ -196,9 +182,10 @@ def player_select():  # second screen
         screen.blit(triple_player_text, (560, 500))
 
         if triple_player:  # move to double player mode
-            # config.players = 3
-            running = False
-            game.main(3)
+            config.players = 3
+            in_menu = False
+            pygame.quit()
+            game.main()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -207,17 +194,17 @@ def player_select():  # second screen
         # clock.tick(15)
 
 
-def main():
-    # runner
-    running = True
-    while running:
-        start_menu()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                pygame.quit()
-                exit()
-        pygame.display.update()
-        clock.tick(15)
-
-main()
+# runner
+in_menu = True
+while in_menu:
+    menu_state = start_menu()
+    if menu_state == False:
+        in_menu = False
+        pygame.quit()
+        sys.exit()
+        break
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            in_menu = False
+    pygame.display.update()
+    # clock.tick(15)
