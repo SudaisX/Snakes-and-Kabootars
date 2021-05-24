@@ -22,9 +22,37 @@ class Display():
         self.screen.fill((45, 48, 51))  # draw a background of color (r, g, b)
         self.screen.blit(self.background, (0, 0))  # draw background image
 
+
+# Main Game Class
+class Game(Display):
+    def __init__(self, total_players):
+        # initializes pygame
+        pygame.init()
+        print('GAME STARTED! ')
+
+        Display.__init__(self)
+
+        # icon and title
+        self.__SetIconTitle()
+
+        # Background music
+        self.__BackgroundMusic()
+
+    def __BackgroundMusic(self):
+        # Background music
+        mixer.music.load('sounds/kabbu.mp3')  # ('file location')
+        mixer.music.play(-1)  # -1 so it plays in a loop
+        mixer.music.set_volume(0.2)
+
+    def __SetIconTitle(self):
+        icon = pygame.image.load(
+            'images/players/player1.png')  # ('icon location')
+        pygame.display.set_caption(
+            'Kabootars and Ladders')  # ('Title of the game)
+        pygame.display.set_icon(icon)  # display icon
+
+
 # Board Class
-
-
 class Board():
     def __init__(self):
         self.board = Graph()
@@ -60,7 +88,7 @@ class Board():
                      (11, 32, self.position[32]),
                      (23, 44, self.position[44]),
                      (28, 77, self.position[77]),
-                     (69, 88, self.position[59]),
+                     (69, 88, self.position[88]),
                      #  (80, 99, self.position[99])
                      ]
         self.board.addEdges(kabootars, True)
@@ -132,6 +160,14 @@ class Player(Board):
             return True
         return False
 
+    # def isWinner(self):
+    #     if self.current_pos == 100:
+    #         #Change Display
+    #         #Display Current Player as winner
+    #         #End Game
+
+
+
     def moveKabootarSnake(self):
         # Check if it has more than 1 out neighbour
         KabootarSnake = self.board.getNeighbours(self.current_pos+1)[1]
@@ -139,7 +175,7 @@ class Player(Board):
 
         # gradient = self.__getGradient(self.position[self.current_pos], KabootarSnakePos)
         # print(self.current_pos, self.position[self.current_pos], KabootarSnake, KabootarSnakePos, gradient)
-        self.current_pos = KabootarSnake
+        self.current_pos = KabootarSnake - 1
 
     def getKabootarSnakePos(self):
         KabootarSnake = self.board.getNeighbours(self.current_pos+1)[1]
@@ -151,18 +187,16 @@ class Player(Board):
         y = node2[1] - node1[1]
         return (y/x)
 
+
 # Players Class
-
-
 class Players():
     def __init__(self, total_players):
         self.players = Queue()
         for i in range(total_players):
             self.players.enQueue(Player(i+1))
 
+
 # Time class
-
-
 class Time():
     pass  # Time elepased
 
@@ -309,34 +343,6 @@ class Kismat(Display):
     #             running=False
     #             break
 
-
-# Main Game Class
-class Game(Display):
-    def __init__(self, total_players):
-        # initializes pygame
-        pygame.init()
-        print('GAME STARTED! ')
-
-        Display.__init__(self)
-
-        # icon and title
-        self.__SetIconTitle()
-
-        # Background music
-        self.__BackgroundMusic()
-
-    def __BackgroundMusic(self):
-        # Background music
-        mixer.music.load('sounds/kabbu.mp3')  # ('file location')
-        mixer.music.play(-1)  # -1 so it plays in a loop
-        mixer.music.set_volume(0.2)
-
-    def __SetIconTitle(self):
-        icon = pygame.image.load(
-            'images/players/player1.png')  # ('icon location')
-        pygame.display.set_caption(
-            'Kabib ke Habootars')  # ('Title of the game)
-        pygame.display.set_icon(icon)  # display icon
 
 
 def main(total_players):
