@@ -289,9 +289,9 @@ class Kismat(Display):
             self.__drawArrow(x, yPos - 16)
 
             if motion == 1:
-                heightChange = 15
+                heightChange = 5
             elif motion == -1:
-                heightChange = -15
+                heightChange = -5
 
             yPos += heightChange
 
@@ -308,7 +308,7 @@ class Kismat(Display):
                 player.draw()
 
             pygame.display.update()
-            clock.tick(60)
+            clock.tick(200)
 
     def QismatCalc(self, stoppingHeight):
         self.tabs[0] = (0, 0)
