@@ -66,6 +66,9 @@ def arrow(arrow_img, start_x, start_y):
     gameDisplay.blit(arrow_img, (start_x, start_y))
 
 
+record = []
+
+
 def qismat_function(x, y):
     # tabs = assign_tabs({}, 0, 0)
     # x, y = 0, 0
@@ -75,6 +78,8 @@ def qismat_function(x, y):
     attempted_ = False
     motion = +1
     y_pos = y
+    global record
+    record = []
     while not attempted:
         for event in pygame.event.get():
             if event.type == pygame.KEYUP:  # You click when you leave the button
@@ -88,6 +93,7 @@ def qismat_function(x, y):
         elif motion == -1:
             height_change = -5
         y_pos += height_change
+        record.append(y_pos)
 
         if y_pos > y+TAB_HEIGHT*6:
             motion = -1
@@ -104,6 +110,8 @@ def qismat_function(x, y):
 # print(qismat_function(0, 0))
 
 def qismat_calc(stopping_height):  # The main basically
+    global record
+    print("max record,", max(record), "min record", min(record))
     tabs[0] = (0, 0)
     print("stoppingHeight:", stopping_height)
     print(tabs)
