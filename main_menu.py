@@ -1,7 +1,6 @@
 import sys
 import pygame
 import game
-# import config
 pygame.init()
 clock = pygame.time.Clock()
 
@@ -11,11 +10,11 @@ HEIGHT = 720
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('HU Kabootars les gooo')
 # Background_start_menu
-background = pygame.image.load(r"images\backgrounds\menu_bg.jpg")
-background = pygame.transform.scale(background, (1080,720))
+background = pygame.image.load(r"images\backgrounds\menu_bg_resized.png")
 # Music
 pygame.mixer.music.load('sounds/kabbu.mp3')  # ('file location')
 pygame.mixer.music.play(-1)  # -1 so it plays in a loop
+pygame.mixer.music.set_volume(0.1)
 # font
 font = pygame.font.Font(r'Fonts\Fipps-Regular.otf', 20)
 small_font = pygame.font.Font(r'Fonts\Fipps-Regular.otf', 10)
@@ -39,7 +38,7 @@ def start_menu():
         screen.blit(credit_text, (800, (HEIGHT/2) - 15))
 
         tutorial_button = button("Tutorial",
-                              (WIDTH/1.5) - 25, (HEIGHT/2) - 75, 150, 50, 'Gold', 'Purple')
+                                 (WIDTH/1.5) - 25, (HEIGHT/2) - 75, 150, 50, 'Gold', 'Purple')
 
         if credits_button:
             credit()
@@ -150,9 +149,10 @@ def tutorial():
         screen.fill('Black')
         screen.blit(background, (0, 0))
 
-        step_1 = font.render(' Press TAB to start a roll', True, 'White')
-        step_2 = font.render(' Press SPACE to select desired number', True, 'White')
-        step_3 = font.render(' Get to the top! ', True, 'White')
+        step_1 = font.render(' 1. Press TAB to start a roll. ', True, 'White')
+        step_2 = font.render(
+            ' 2. Press SPACE to select desired number. ', True, 'White')
+        step_3 = font.render(' 3. Get to the top! ', True, 'White')
         pygame.draw.rect(
             screen, 'Black', (300, 200, step_1.get_width(), step_1.get_height()))
         pygame.draw.rect(
@@ -203,9 +203,6 @@ def player_select():  # second screen
         screen.blit(single_player_text, (160, 500))
 
         if single_player:  # move to single player mode
-            # game(1)
-            # config.players = 1
-            # print(config.players)
             in_menu = False
             game.main(1)
 
@@ -215,7 +212,6 @@ def player_select():  # second screen
         screen.blit(double_player_text, (460, 500))
 
         if double_player:  # move to double player mode
-            # config.players = 2
             in_menu = False
             game.main(2)
 
@@ -225,9 +221,7 @@ def player_select():  # second screen
         screen.blit(triple_player_text, (760, 500))
 
         if triple_player:  # move to double player mode
-            # config.players = 3
             in_menu = False
-            pygame.quit()
             game.main(3)
 
         for event in pygame.event.get():
