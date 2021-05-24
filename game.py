@@ -143,7 +143,7 @@ class Player(Board):
         self.screen = pygame.display.set_mode((1080, 720))
         self.player_num = player_num
         self.images = ['images/players/player1.png',
-                       'images/players/zain.png', 'images/players/player2.png', ]
+                       'images/players/player3_2.png', 'images/players/player2.png', ]
         self.image = pygame.image.load(self.images[player_num-1])
         self.current_pos = 0
         self.x = self.board.graph[self.current_pos][0][1][0]
@@ -289,9 +289,9 @@ class Kismat(Display):
             self.__drawArrow(x, yPos - 16)
 
             if motion == 1:
-                heightChange = 15
+                heightChange = 5
             elif motion == -1:
-                heightChange = -15
+                heightChange = -5
 
             yPos += heightChange
 
@@ -308,7 +308,7 @@ class Kismat(Display):
                 player.draw()
 
             pygame.display.update()
-            clock.tick(60)
+            clock.tick(200)
 
     def QismatCalc(self, stoppingHeight):
         self.tabs[0] = (0, 0)
