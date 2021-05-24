@@ -6,9 +6,8 @@ from pprint import pprint
 from random import randint
 import time
 
+
 # Display Class
-
-
 class Display():
     def __init__(self):
         # screen size and background image
@@ -196,11 +195,6 @@ class Players():
             self.players.enQueue(Player(i+1))
 
 
-# Time class
-class Time():
-    pass  # Time elepased
-
-
 # Kismat class (Dice)
 class Kismat(Display):
     def __init__(self, players):
@@ -312,7 +306,7 @@ class Kismat(Display):
 
     def QismatCalc(self, stoppingHeight):
         self.tabs[0] = (0, 0)
-        print("stoppingHeight:", stoppingHeight)
+        # print("stoppingHeight:", stoppingHeight)
 
         for roll in self.tabs:
             if (self.tabs[roll][1] >= stoppingHeight) and stoppingHeight > self.tabs[roll-1][1]:
@@ -322,29 +316,8 @@ class Kismat(Display):
         self.kismat = randint(1, 6)
         return self.kismat
 
-# Prompt ~Class~ function
 
-
-# def display_prompt(message):
-#     running = True
-#     button_text = font.render(message, True, "White")
-#     button_box = button_text.get_rect(center=((x+(width/2)), (y+(height/2))))
-#     pygame.draw.rect(screen, "Black", ((WIDTH/2)-button_box.get_rect), y, width, height))
-#     screen.blit(button_text, button_box)
-#     # center graphic on screen?
-    #
-    # #
-    # while running:
-    #     for event in pygame.event.get():
-    #         screen.blit(img, (coords[0], coords[1]))
-    #         pygame.display.flip()
-
-    #         if event.type == pygame.MOUSEBUTTONDOWN:
-    #             running=False
-    #             break
-
-
-
+# Main game function (called through start_menu.py)
 def main(total_players):
     # total_players = 3
     game = Game(total_players)
